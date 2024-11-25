@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using GymBuddyApi.Models;
 
 [ApiController]
 [Route("api/[controller]")]

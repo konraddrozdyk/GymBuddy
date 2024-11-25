@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gym Buddy</title>
+  <title>Training Sessions</title>
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1>Training Sessions</h1>
-  <ul id="sessions"></ul>
+  <div id="app">
+    <h1>Training Sessions</h1>
+    <div id="container">
+      <table id="table"></table>  <!-- Correctly using the table element -->
+    </div>
+  </div>
 
-  <h2>Add New Session</h2>
-  <input id="session-date" type="date">
-  <button id="add-session">Add Session</button>
-
-  <script src="app.js" defer></script>
+  <script type="module" src="/main.js"></script>
 </body>
 </html>

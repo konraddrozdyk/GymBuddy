@@ -1,72 +1,30 @@
-import './style.css'
+const API_BASE_URL = 'http://localhost:5012/api/Training';
 
-import { getAllSessions, addSession, deleteSession } from './api.js';
-
-const sessionsList = document.getElementById('sessions');
-const addSessionButton = document.getElementById('add-session');
-const sessionDateInput = document.getElementById('session-date');
-
-// Fetch and display all sessions
-async function loadSessions() {
-  try {
-    const sessions = await getAllSessions();
-    sessionsList.innerHTML = ''; // Clear existing list
-
-    sessions.forEach((session) => {
-      const listItem = document.createElement('li');
-      listItem.textContent = `${session.date} - ${session.exercises.length} exercises`;
-      
-      const deleteButton = document.createElement('button');
-      deleteButton.textContent = 'Delete';
-      deleteButton.addEventListener('click', () => handleDeleteSession(session.date));
-
-      listItem.appendChild(deleteButton);
-      sessionsList.appendChild(listItem);
-    });
-  } catch (error) {
-    console.error(error);
-    alert('Failed to load sessions');
-  }
+async function GetAllSessions() {
+  const response = await fetch(API_BASE_URL);
+  if (!response.ok) throw new Error('Failed to fetch sessions');
+  const json = await response.json();
+  displayData(json);
 }
 
-// Handle adding a new session
-async function handleAddSession() {
-  const date = sessionDateInput.value;
-  if (!date) {
-    alert('Please select a date');
-    return;
-  }
+// Display data in table format
+function displayData(jsonobject) {
+  const table = document.querySelector('#table');
+  table.innerHTML = '';
 
-  const newSession = {
-    date: date,
-    exercises: [], // Placeholder, update as needed
-  };
+  const headerRow = document.createElement('tr');
+  headerRow.innerHTML = `<th>ID</th><th>Date</th><th>Exercise</th>`;
+  table.appendChild(headerRow);
 
-  try {
-    await addSession(newSession);
-    sessionDateInput.value = ''; // Clear the input
-    loadSessions(); // Refresh the list
-  } catch (error) {
-    console.error(error);
-    alert('Failed to add session');
-  }
+  jsonobject.forEach((session) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${session.id}</td>
+      <td>${session.date}</td>
+      <td>${session.exercise}</td>
+    `;
+    table.appendChild(row);
+  });
 }
 
-// Handle deleting a session
-async function handleDeleteSession(date) {
-  if (!confirm('Are you sure you want to delete this session?')) return;
-
-  try {
-    await deleteSession(date);
-    loadSessions(); // Refresh the list
-  } catch (error) {
-    console.error(error);
-    alert('Failed to delete session');
-  }
-}
-
-// Attach event listeners
-addSessionButton.addEventListener('click', handleAddSession);
-
-// Load sessions on page load
-loadSessions();
+GetAllSessions();

@@ -7,7 +7,7 @@ using System.Text.Json;
 public class TrainingService
 {
     private readonly string DataFolder = "Data";
-
+    
     public TrainingService()
     {
         if (!Directory.Exists(DataFolder))
